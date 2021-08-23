@@ -69,8 +69,8 @@
     "husky": "^3.0.3",
     "prettier": "^1.18.2",
     "pretty-quick": "^1.11.1",
-    "react": "^16.9.0",
-    "react-dom": "^16.9.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
     "styled-components": "^4.3.2",
     "stylelint": "^10.1.0",
     "stylelint-config-rational-order": "^0.1.2",
@@ -79,12 +79,12 @@
     "stylelint-processor-styled-components": "^1.8.0",
     "tsdx": "^0.7.2",
     "tslib": "^1.10.0",
-    "typescript": "^3.5.3",
-    "uniqid": "^5.0.3",
     "tslint": "^5.18.0",
     "tslint-config-prettier": "^1.18.0",
     "tslint-eslint-rules": "^5.4.0",
     "tslint-react": "^4.0.0",
+    "typescript": "^3.5.3",
+    "uniqid": "^5.0.3",
     "webpack": "^4.31.0"
   },
   "peerDependencies": {
@@ -93,8 +93,9 @@
   },
   "dependencies": {
     "Builder": "^2.8.1",
-    "uniqid": "^5.0.3",
-    "styled-components": "^4.3.2"
+    "antd": "^4.16.13",
+    "styled-components": "^4.3.2",
+    "uniqid": "^5.0.3"
   },
   "jest": {
     "collectCoverage": true,

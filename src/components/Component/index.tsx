@@ -1,25 +1,7 @@
 import React, { useContext } from 'react';
-import styled from 'styled-components';
 import { clone } from '../../utils/clone';
-import {
-  isBoolean,
-  isOptionList,
-  isString,
-  isStringArray,
-  isUndefined,
-} from '../../utils/types';
 import { BuilderFieldOperator } from '../Builder';
 import { BuilderContext } from '../Context';
-import { Boolean } from '../Widgets/Boolean';
-import { FieldSelect } from '../Widgets/FieldSelect';
-import { Input } from '../Widgets/Input';
-import { OperatorSelect } from '../Widgets/OperatorSelect';
-import { Select } from '../Widgets/Select';
-import { SelectMulti } from '../Widgets/SelectMulti';
-
-const BooleanContainer = styled.div`
-  align-self: center;
-`;
 
 export interface ComponentProps {
   field: string;
@@ -60,34 +42,15 @@ export const Component: React.FC<ComponentProps> = ({
     onChange(clonedData);
   };
 
-  if (fields && strings.component) {
+  if (strings.component) {
     if (fieldRef === '') {
       return (
         <ComponentContainer
-          controls={
-            !readOnly && (
-              <Remove label={strings.component.delete} onClick={handleDelete} />
-            )
-          }
-        >
-          <FieldSelect selectedValue={''} id={id} />
-        </ComponentContainer>
+          controls={!readOnly && <Remove label="删除" onClick={handleDelete} />}
+        ></ComponentContainer>
       );
     } else {
       try {
-        const fieldIndex = fields.findIndex(item => item.field === fieldRef);
-
-        const { field, operators, type, value: fieldValue } = fields[
-          fieldIndex
-        ];
-
-        const operatorsOptionList =
-          operators &&
-          operators.map(item => ({
-            value: item,
-            label: strings.operators && strings.operators[item],
-          }));
-
         return (
           <ComponentContainer
             controls={
@@ -99,98 +62,7 @@ export const Component: React.FC<ComponentProps> = ({
               )
             }
           >
-            <FieldSelect selectedValue={field} id={id} />
-
-            {type === 'BOOLEAN' && isBoolean(selectedValue) && (
-              <BooleanContainer>
-                <Boolean id={id} selectedValue={selectedValue} />
-              </BooleanContainer>
-            )}
-
-            {type === 'LIST' &&
-              isString(selectedValue) &&
-              isOptionList(fieldValue) &&
-              isOptionList(operatorsOptionList) && (
-                <>
-                  <OperatorSelect
-                    id={id}
-                    values={operatorsOptionList}
-                    selectedValue={operator}
-                  />
-                  {operator && (
-                    <Select
-                      id={id}
-                      selectedValue={selectedValue}
-                      values={fieldValue}
-                    />
-                  )}
-                </>
-              )}
-
-            {type === 'MULTI_LIST' &&
-              isOptionList(fieldValue) &&
-              isOptionList(operatorsOptionList) &&
-              isStringArray(selectedValue) && (
-                <>
-                  <OperatorSelect
-                    id={id}
-                    values={operatorsOptionList}
-                    selectedValue={operator}
-                  />
-                  {operator && (
-                    <SelectMulti
-                      id={id}
-                      values={fieldValue}
-                      selectedValue={selectedValue}
-                    />
-                  )}
-                </>
-              )}
-
-            {type === 'TEXT' &&
-              isOptionList(operatorsOptionList) &&
-              (isString(selectedValue) || isStringArray(selectedValue)) && (
-                <>
-                  <OperatorSelect
-                    id={id}
-                    values={operatorsOptionList}
-                    selectedValue={operator}
-                  />
-                  {operator && (
-                    <Input type="text" value={selectedValue} id={id} />
-                  )}
-                </>
-              )}
-
-            {type === 'NUMBER' &&
-              isOptionList(operatorsOptionList) &&
-              (isString(selectedValue) || isStringArray(selectedValue)) && (
-                <>
-                  <OperatorSelect
-                    id={id}
-                    values={operatorsOptionList}
-                    selectedValue={operator}
-                  />
-                  {operator && (
-                    <Input type="number" value={selectedValue} id={id} />
-                  )}
-                </>
-              )}
-
-            {type === 'DATE' &&
-              isOptionList(operatorsOptionList) &&
-              (isString(selectedValue) || isStringArray(selectedValue)) && (
-                <>
-                  <OperatorSelect
-                    id={id}
-                    values={operatorsOptionList}
-                    selectedValue={operator}
-                  />
-                  {!isUndefined(operator) && (
-                    <Input type="date" value={selectedValue} id={id} />
-                  )}
-                </>
-              )}
+            {console.log('data', data)}
           </ComponentContainer>
         );
       } catch (e) {

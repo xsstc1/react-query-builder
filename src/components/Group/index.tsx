@@ -3,6 +3,13 @@ import uniqid from 'uniqid';
 import { clone } from '../../utils/clone';
 import { BuilderGroupValues } from '../Builder';
 import { BuilderContext } from '../Context';
+import { Menu, Dropdown, Button, Radio } from 'antd';
+import {
+  PlusOutlined,
+  PlusCircleOutlined,
+  DeleteOutlined,
+} from '@ant-design/icons';
+import 'antd/dist/antd.css';
 
 export interface GroupProps {
   value?: BuilderGroupValues;
@@ -19,15 +26,11 @@ export const Group: React.FC<GroupProps> = ({
   id,
   isRoot,
 }) => {
-  const { components, data, setData, onChange, strings, readOnly } = useContext(
+  const { components, data, setData, onChange, strings } = useContext(
     BuilderContext
   );
-  const {
-    Add,
-    Group: GroupContainer,
-    GroupHeaderOption: Option,
-    Remove,
-  } = components;
+  const { Group: GroupContainer } = components;
+  const relationOptions = ['AND', 'OR'];
 
   const findIndex = () => {
     const clonedData = clone(data);
@@ -81,13 +84,26 @@ export const Group: React.FC<GroupProps> = ({
     addItem(EmptyRule);
   };
 
-  const handleChangeGroupType = (nextValue: BuilderGroupValues) => {
+  // Add item dropdown menu
+  const AddItemMenu = (
+    <Menu>
+      <Menu.Item onClick={handleAddRule} key="1">
+        Key Word
+      </Menu.Item>
+    </Menu>
+  );
+
+  const handleChangeGroupType = (e: { target: { value: any } }) => {
     const { clonedData, parentIndex } = findIndex();
-    clonedData[parentIndex].value = nextValue;
+    clonedData[parentIndex].value = e.target.value;
 
     setData(clonedData);
     onChange(clonedData);
   };
+
+  // const handleChangeRelation = (e: { target: { value: object } }) => {
+  //   console.log('radio1 checked', e.target.value);
+  // };
 
   const handleToggleNegateGroup = (nextValue: boolean) => {
     const { clonedData, parentIndex } = findIndex();
@@ -119,7 +135,7 @@ export const Group: React.FC<GroupProps> = ({
       <GroupContainer
         controlsLeft={
           <>
-            <Option
+            {/* <Option
               isSelected={!!isNegated}
               value={!isNegated}
               disabled={readOnly}
@@ -127,8 +143,15 @@ export const Group: React.FC<GroupProps> = ({
               data-test="Option[not]"
             >
               {strings.group.not}
-            </Option>
-            <Option
+            </Option> */}
+            <Radio.Group
+              options={relationOptions}
+              onChange={handleChangeGroupType}
+              value={value}
+              optionType="button"
+              buttonStyle="solid"
+            />
+            {/* <Option
               isSelected={value === 'AND'}
               value="AND"
               disabled={readOnly}
@@ -145,31 +168,47 @@ export const Group: React.FC<GroupProps> = ({
               data-test="Option[or]"
             >
               {strings.group.or}
-            </Option>
+            </Option> */}
           </>
         }
         controlsRight={
-          !readOnly && (
-            <>
-              <Add
-                onClick={handleAddRule}
-                label={strings.group.addRule}
-                data-test="AddRule"
+          <>
+            <Dropdown
+              overlay={AddItemMenu}
+              trigger={['click']}
+              placement="bottomCenter"
+              arrow
+            >
+              <Button
+                type="primary"
+                shape="round"
+                size="middle"
+                icon={<PlusOutlined />}
+              >
+                Add Item
+              </Button>
+            </Dropdown>
+            <Button
+              type="primary"
+              onClick={handleAddGroup}
+              shape="round"
+              size="middle"
+              icon={<PlusCircleOutlined />}
+            >
+              Add Group
+            </Button>
+
+            {!isRoot && (
+              <Button
+                type="primary"
+                danger
+                onClick={handleDeleteGroup}
+                shape="round"
+                icon={<DeleteOutlined />}
+                size="middle"
               />
-              <Add
-                onClick={handleAddGroup}
-                label={strings.group.addGroup}
-                data-test="AddGroup"
-              />
-              {!isRoot && (
-                <Remove
-                  onClick={handleDeleteGroup}
-                  label={strings.group.delete}
-                  data-test="Remove"
-                />
-              )}
-            </>
-          )
+            )}
+          </>
         }
       >
         {children}

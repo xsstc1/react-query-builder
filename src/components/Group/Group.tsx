@@ -19,7 +19,6 @@ const GroupHeader = styled.div`
 `;
 
 const Left = styled.div`
-  display: grid;
   grid-auto-columns: min-content;
   grid-auto-flow: column;
   align-self: end;
