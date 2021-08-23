@@ -2,6 +2,9 @@ import React, { useContext } from 'react';
 import { clone } from '../../utils/clone';
 import { BuilderFieldOperator } from '../Builder';
 import { BuilderContext } from '../Context';
+import { Button } from 'antd';
+import 'antd/dist/antd.css';
+import { DeleteOutlined } from '@ant-design/icons';
 
 export interface ComponentProps {
   field: string;
@@ -46,7 +49,16 @@ export const Component: React.FC<ComponentProps> = ({
     if (fieldRef === '') {
       return (
         <ComponentContainer
-          controls={!readOnly && <Remove label="删除" onClick={handleDelete} />}
+          controls={
+            <Button
+              type="primary"
+              danger
+              onClick={handleDelete}
+              shape="round"
+              icon={<DeleteOutlined />}
+              size="middle"
+            />
+          }
         ></ComponentContainer>
       );
     } else {
@@ -54,12 +66,14 @@ export const Component: React.FC<ComponentProps> = ({
         return (
           <ComponentContainer
             controls={
-              !readOnly && (
-                <Remove
-                  label={strings.component.delete}
-                  onClick={handleDelete}
-                />
-              )
+              <Button
+                type="primary"
+                danger
+                onClick={handleDelete}
+                shape="round"
+                icon={<DeleteOutlined />}
+                size="middle"
+              />
             }
           >
             {console.log('data', data)}
